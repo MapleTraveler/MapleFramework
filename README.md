@@ -2,10 +2,10 @@
 
 一个**可裁剪、零游戏规则**的 Unity 游戏框架。用分层 + 服务定位（ServiceHub）把「基础设施」和「游戏逻辑」彻底隔开：框架只提供事件、对象池、Tick、资源、场景、定时、存档、配置、网络、音频、UI 这些**通用能力**，玩法规则一律留在游戏层。
 
-- 架构详解：[`MapleFramework总纲.md`](MapleFramework总纲.md)
-- 进度与路线图：[`MapleFramework进度.md`](MapleFramework进度.md)
-- 关键决策（为什么这么定）：[`ADR/README.md`](ADR/README.md)
-- 局内对象怎么管 / 要不要实体系统：[`指南-实体与局内对象管理.md`](指南-实体与局内对象管理.md)
+- 架构详解：[`MapleFramework总纲.md`](Documentation~/MapleFramework总纲.md)
+- 进度与路线图：[`MapleFramework进度.md`](Documentation~/MapleFramework进度.md)
+- 关键决策（为什么这么定）：[`ADR/README.md`](Documentation~/ADR/README.md)
+- 局内对象怎么管 / 要不要实体系统：[`指南-实体与局内对象管理.md`](Documentation~/指南-实体与局内对象管理.md)
 
 > 环境：Unity 2022.3（LTS）。C# 契约层零外部依赖；实现层用 UniTask。
 
