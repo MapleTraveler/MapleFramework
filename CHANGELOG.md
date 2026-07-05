@@ -1,0 +1,26 @@
+# Changelog
+
+本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
+`0.x` 阶段公开 API 仍可能变动，破坏性改动会在此明确标注。
+
+## [1.0.0] - 2026-07-05
+
+首个可作为 UPM 包分发的版本，涵盖 Phase 0–4 全部能力，并完成一次收束清理。
+
+### Added
+- **配置系统（Phase 4）**：`IConfigProvider` + `ConfigProvider`，泛型键防装箱，ServiceHub 默认注册；`Maple.Extensions` 提供可选便利件 `ScriptableObjectConfigTable<TKey,TEntry>`。
+- **场景系统（Phase 3）**：`ISceneLoader`（后端抽象）+ `ISceneFlowService`（切换编排，含进度/开始/完成事件，UI 与规则无关）；实现 `SceneManagerSceneLoader`、`SceneFlowService`；`GameRoot` 增加 SceneFlow 注册开关。
+- **定时系统（Phase 1）**：`ITimerService` + `TimerService`（统一 Tick 驱动、句柄、timeScale 隔离）。
+- **存档系统（Phase 2）**：`ISaveService` + `JsonSaveService`（原子写 + 版本信封，复用 `ISerializer`）。
+- 打包与文档：`package.json`、`README.md`、本 `CHANGELOG.md`、`指南-实体与局内对象管理.md`、`playbook-抽取与升级.md`。
+
+### Changed
+- `MapleFramework总纲.md` 全面校正，补齐 Phase 1–4 服务清单，修正过时描述。
+- 分发策略由「延后」改为「启用独立仓库 + UPM Git URL」，见 ADR-008（取代 ADR-003）。
+
+### Removed
+- **移除 Entity 空接口族**：`IEntity` / `IHasId` / `IIdAllocator` / `IEntityFactory` / `IEntityLifecycle` / `IEntityUpdater` / `IEntityInitializer` / `IContextApplier` / `ISystemOrder` 及 `EEntityCreateFailReason`。这些接口零实现零使用，属误导性负债；局内对象管理的推荐做法见实体指南。
+
+### 前置依赖
+- **UniTask**（Cysharp，Git URL 手动安装）—— `Maple.Framework` / `Maple.Extensions` 必需。
+- **com.unity.nuget.newtonsoft-json** —— 已在 `package.json` 声明。

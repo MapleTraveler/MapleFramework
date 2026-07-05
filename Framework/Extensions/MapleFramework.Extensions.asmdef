@@ -1,0 +1,17 @@
+{
+    "name": "Maple.Extensions",
+    "rootNamespace": "Maple.Extensions",
+    "references": [
+        "Maple.Core",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
