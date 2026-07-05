@@ -87,10 +87,10 @@ var go = Pooler.Get<MyPoolable>();
 装好前置依赖后，Package Manager → Add package from git URL：
 
 ```
-https://github.com/<your-org>/MapleFramework.git
+https://github.com/MapleTraveler/MapleFramework.git
 ```
 
-需要锁版本时加 tag：`...MapleFramework.git#v0.4.0`。
+需要锁版本时加 tag：`...MapleFramework.git#v1.0.0`。
 
 ---
 
