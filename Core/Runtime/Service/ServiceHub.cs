@@ -45,6 +45,15 @@ namespace Maple.Core
         }
 
         /// <summary>
+        /// 注销指定接口类型的服务。用于会话结束等需要"移除"而非"覆盖"的场景。
+        /// 未注册时安全返回 false。
+        /// </summary>
+        public static bool Unregister<T>() where T : class
+        {
+            return _services.Remove(typeof(T));
+        }
+
+        /// <summary>
         /// 获取已注册的服务，未找到返回 null。
         /// </summary>
         public static T Get<T>() where T : class
