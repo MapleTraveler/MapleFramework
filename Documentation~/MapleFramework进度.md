@@ -327,7 +327,7 @@ var fireball = ServiceHub.Require<IConfigProvider>()
 
 **决策**：见 [ADR-008](ADR/ADR-008-distribution-upm-git.md)（取代 ADR-003）。分发形态为「独立 Git 仓库 + UPM Git URL」，OpenUPM 按需再上。
 
-**真源仓库**：`https://github.com/MapleTraveler/MapleFramework.git`。仓库根即包根，含 `package.json`（`com.maple.framework`）、`README.md`、`CHANGELOG.md`、`LICENSE.md`。当前版本 **1.4.0**，`version` 与 tag `vX.Y.Z` 恒等。
+**真源仓库**：`https://github.com/MapleTraveler/MapleFramework.git`。仓库根即包根，含 `package.json`（`com.maple.framework`）、`README.md`、`CHANGELOG.md`、`LICENSE.md`。当前版本 **1.5.0**，`version` 与 tag `vX.Y.Z` 恒等。
 
 **前置依赖**：UniTask（Git URL 手动安装）、Newtonsoft（已在 `package.json` 声明）。
 

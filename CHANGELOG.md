@@ -3,6 +3,14 @@
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 自 `1.0.0` 起承诺兼容：破坏性改动必须进 major 版本，并在此明确标注。
 
+## [1.5.0] - 2026-08-17
+
+### Fixed
+- `TickRegistry.Tick` / `FixedTick` 对每个 tickable 单独隔离异常：一个对象抛出后记录 `LogException`（含类型名）并继续派发本轮后续对象，与 `EventBus.Publish`、`TimerService.Tick` 一致。
+
+### Changed
+- `ITickRegistry` 派发语义补充：单个 tickable 抛异常不中断整轮。接口方法不变，消费方无需改动。
+
 ## [1.4.0] - 2026-08-17
 
 ### Added
