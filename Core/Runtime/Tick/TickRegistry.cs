@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Maple.Core
@@ -94,7 +95,15 @@ namespace Maple.Core
                     if (_removedTickables.Count > 0 && _removedTickables.Contains(tickable))
                         continue;
 
-                    tickable.Tick(deltaTime);
+                    try
+                    {
+                        tickable.Tick(deltaTime);
+                    }
+                    catch (Exception e)
+                    {
+                        GLogger.LogException(e, LogTag.FRAMEWORK,
+                            $"TickRegistry.Tick: {tickable.GetType().Name} threw");
+                    }
                 }
             }
             finally
@@ -132,7 +141,15 @@ namespace Maple.Core
                         continue;
                     }
 
-                    fixedTickable.FixedTick(fixedDeltaTime);
+                    try
+                    {
+                        fixedTickable.FixedTick(fixedDeltaTime);
+                    }
+                    catch (Exception e)
+                    {
+                        GLogger.LogException(e, LogTag.FRAMEWORK,
+                            $"TickRegistry.FixedTick: {fixedTickable.GetType().Name} threw");
+                    }
                 }
             }
             finally
