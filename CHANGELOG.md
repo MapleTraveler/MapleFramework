@@ -3,6 +3,14 @@
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 `0.x` 阶段公开 API 仍可能变动，破坏性改动会在此明确标注。
 
+## [1.1.0] - 2026-08-17
+
+### Added
+- `ServiceHub.Unregister<T>()`：按接口类型注销服务，用于会话结束等需要「移除」而非「覆盖」的场景；未注册时返回 `false`。
+
+### Fixed
+- 修正版本号真源：`1.0.0` 发版时 `package.json` 的 `version` 仍为 `0.1.0`，与 tag `v1.0.0` 不一致。自本版起 `version` 与 tag 恒等（ADR-008）。
+
 ## [1.0.0] - 2026-07-05
 
 首个可作为 UPM 包分发的版本，涵盖 Phase 0–4 全部能力，并完成一次收束清理。

@@ -323,18 +323,24 @@ var fireball = ServiceHub.Require<IConfigProvider>()
 
 ---
 
-## 分发准备〔已启用：独立仓库 + UPM Git URL〕
+## 分发形态〔独立仓库 + UPM Git URL〕
 
-**决策**：见 [ADR-008](ADR/ADR-008-distribution-upm-git.md)（取代 ADR-003）。分发形态改为「独立 Git 仓库 + UPM Git URL」，OpenUPM 按需再上。
+**决策**：见 [ADR-008](ADR/ADR-008-distribution-upm-git.md)（取代 ADR-003）。分发形态为「独立 Git 仓库 + UPM Git URL」，OpenUPM 按需再上。
 
-**已就位**：`package.json`（`com.maple.framework` 0.4.0）、`README.md`、`CHANGELOG.md`。
+**真源仓库**：`https://github.com/MapleTraveler/MapleFramework.git`。仓库根即包根，含 `package.json`（`com.maple.framework`）、`README.md`、`CHANGELOG.md`、`LICENSE.md`。当前版本 **1.1.0**，`version` 与 tag `vX.Y.Z` 恒等。
 
-**待你执行**（一次性，操作细节见 `playbook-抽取与升级.md`）：
+**前置依赖**：UniTask（Git URL 手动安装）、Newtonsoft（已在 `package.json` 声明）。
 
-- 建独立 Git 仓库，把 `MapleFramework/` 连 `.meta` 整体迁入（GUID 必须保全）
-- 补 `LICENSE.md`（建议 MIT）+ `.gitignore`
-- `git tag v0.4.0` 并 push；消费工程改用 UPM Git URL / 本地 `file:` package 引用
-- 前置依赖：UniTask（Git URL 手动装）、Newtonsoft（已进 `package.json`）
+**消费方接入方式**：
+
+| 项目 | 接入方式 | 说明 |
+| --- | --- | --- |
+| MELTDOWN | git subtree，落在 `Packages/com.maple.framework` | 工程侧只执行 `git subtree pull`；框架改动一律回真源仓库做，不在工程内的副本里直接改 |
+| BattleAgentCore | 工程内目录 `Assets/Scripts/MapleFramework` | 框架发源工程，当前作只读参考，不随真源仓库自动更新 |
+
+**发版固定动作**（操作细节见 `playbook-抽取与升级.md`）：
+
+改代码 → 更新 `CHANGELOG.md` → 改 `package.json` 的 `version` → commit → `git tag vX.Y.Z` → push（含 tags）→ 消费工程按各自接入方式取新版。
 
 ---
 
