@@ -45,7 +45,27 @@ namespace Maple.Core
         }
 
         /// <summary>
-        /// 注销指定接口类型的服务。用于会话结束等需要"移除"而非"覆盖"的场景。
+        /// 注销指定接口类型的服务，仅当当前注册实例与 <paramref name="expectedInstance"/> 相同时移除。
+        /// 未注册或当前持有者不是期望实例时返回 false。
+        /// </summary>
+        public static bool Unregister<T>(T expectedInstance) where T : class
+        {
+            if (expectedInstance == null)
+                return false;
+
+            if (_services.TryGetValue(typeof(T), out var current) &&
+                ReferenceEquals(current, expectedInstance))
+            {
+                _services.Remove(typeof(T));
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 按接口类型注销当前注册的服务，不验证实例所有权。
+        /// 仅用于组合根关闭或确认无并发注册者的场景；业务侧优先使用 Unregister&lt;T&gt;(T expectedInstance)。
         /// 未注册时安全返回 false。
         /// </summary>
         public static bool Unregister<T>() where T : class

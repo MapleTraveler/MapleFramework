@@ -3,6 +3,14 @@
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 自 `1.0.0` 起承诺兼容：破坏性改动必须进 major 版本，并在此明确标注。
 
+## [1.2.0] - 2026-08-17
+
+### Added
+- `ServiceHub.Unregister<T>(T expectedInstance)`：仅当当前注册实例与期望实例相同时注销，防止旧实例误删新持有者。
+
+### Changed
+- 无参 `ServiceHub.Unregister<T>()` 的文档明确为组合根关闭专用；业务侧优先使用带期望实例的重载。
+
 ## [1.1.0] - 2026-08-17
 
 ### Added
