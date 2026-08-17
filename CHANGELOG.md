@@ -1,7 +1,7 @@
 # Changelog
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
-`0.x` 阶段公开 API 仍可能变动，破坏性改动会在此明确标注。
+自 `1.0.0` 起承诺兼容：破坏性改动必须进 major 版本，并在此明确标注。
 
 ## [1.1.0] - 2026-08-17
 
