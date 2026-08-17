@@ -3,6 +3,19 @@
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 自 `1.0.0` 起承诺兼容：破坏性改动必须进 major 版本，并在此明确标注。
 
+## [1.4.0] - 2026-08-17
+
+### Added
+- `TickRegistry`：`ITickRegistry` 的独立实现，纯 C# 无 MonoBehaviour 依赖，可直接单测。
+- `ITickRegistry` 补齐派发语义契约：注册次轮生效、注销立即生效、按注册顺序调用、不可重入。在 `Tick` 内部注册或注销（含注销自己）成为受支持的用法。
+
+### Fixed
+- 修复派发过程中注销会导致其它对象漏 Tick：旧实现遍历活列表并实时读取 `Count`，注销排在当前项之前的对象会使后续元素左移一位，正好跳过一个。现改为遍历复用快照，注册表本身不参与迭代。
+- 派发过程中注册的对象不再于当前轮被立即调用，杜绝了「Tick 内递归注册导致单帧无界增长」的卡死路径。
+
+### Changed
+- `GameRoot` 的 Tick 派发改为委托给 `TickRegistry`。`ITickRegistry` 接口不变，`GameRoot` 仍实现该接口并注册到 ServiceHub，消费方无需改动。
+
 ## [1.3.0] - 2026-08-17
 
 ### Added

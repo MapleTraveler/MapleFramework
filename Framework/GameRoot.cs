@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Maple.Core;
 using Maple.Extensions;
@@ -13,8 +12,9 @@ namespace Maple.Framework
     /// </summary>
     public class GameRoot : MonoBehaviour, ITickRegistry
     {
-        private readonly List<ITickable> _tickables = new();
-        private readonly List<IFixedTickable> _fixedTickables = new();
+        // Tick 派发委托给纯 C# 的 TickRegistry：派发语义（帧内增删、注销立即生效）
+        // 与 MonoBehaviour 生命周期无关，独立出去便于单测，见 ITickRegistry 契约注释。
+        private readonly TickRegistry _tickRegistry = new();
 
         [Tooltip("为 true 时跨场景不销毁，适合单例入口；为 false 时随场景卸载销毁并 Shutdown。")]
         [SerializeField] private bool dontDestroyOnLoad = true;
@@ -156,42 +156,37 @@ namespace Maple.Framework
 
         private void Update()
         {
-            for (int i = 0; i < _tickables.Count; i++)
-                _tickables[i].Tick(Time.deltaTime);
+            _tickRegistry.Tick(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            for (int i = 0; i < _fixedTickables.Count; i++)
-                _fixedTickables[i].FixedTick(Time.fixedDeltaTime);
+            _tickRegistry.FixedTick(Time.fixedDeltaTime);
         }
 
         public void Register(ITickable tickable)
         {
-            if (tickable != null && !_tickables.Contains(tickable))
-                _tickables.Add(tickable);
+            _tickRegistry.Register(tickable);
         }
 
         public void Unregister(ITickable tickable)
         {
-            _tickables.Remove(tickable);
+            _tickRegistry.Unregister(tickable);
         }
 
         public void Register(IFixedTickable fixedTickable)
         {
-            if (fixedTickable != null && !_fixedTickables.Contains(fixedTickable))
-                _fixedTickables.Add(fixedTickable);
+            _tickRegistry.Register(fixedTickable);
         }
 
         public void Unregister(IFixedTickable fixedTickable)
         {
-            _fixedTickables.Remove(fixedTickable);
+            _tickRegistry.Unregister(fixedTickable);
         }
 
         private void OnDestroy()
         {
-            _tickables.Clear();
-            _fixedTickables.Clear();
+            _tickRegistry.Clear();
             ServiceHub.Shutdown();
         }
     }

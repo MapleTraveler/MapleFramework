@@ -1,6 +1,6 @@
 {
   "name": "com.maple.framework",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "displayName": "MapleFramework",
   "description": "可裁剪、零游戏规则的 Unity 游戏框架：ServiceHub 服务定位 + 分层 asmdef，提供事件 / 对象池 / Tick / 资源 / 场景 / 定时 / 存档 / 配置 / 网络 / 音频 / UI 等通用能力。前置依赖 UniTask（Git URL 手动安装）。",
   "unity": "2022.3",
