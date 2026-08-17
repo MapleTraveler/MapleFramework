@@ -7,12 +7,23 @@ using UnityEngine;
 namespace Maple.Extensions
 {
     /// <summary>
+    /// 创建 <see cref="AudioService"/> 时的项目配置。
+    /// 双 BGM 音源由框架内部持有，项目只提供加载策略和默认音量。
+    /// </summary>
+    public struct AudioServiceSettings
+    {
+        public Func<string, AudioClip> ClipLoader;
+        public float BgmVolume;
+        public float SfxVolume;
+    }
+
+    /// <summary>
     /// IAudioService 的默认实现。
     /// 双 AudioSource 交叉淡入淡出 BGM，音频缓存，音量控制。
     /// 挂到 GameObject 上，Awake 时自动注册到 ServiceHub。
+    /// 音源由本组件自行创建或补齐；也可通过 Inspector 预接线。
     /// 资源默认从 Resources/Audio/ 加载，可通过 ClipLoader 委托替换加载方式。
     /// </summary>
-    [RequireComponent(typeof(AudioSource))]
     public class AudioService : MonoBehaviour, IAudioService
     {
         [Header("BGM")]
@@ -37,6 +48,25 @@ namespace Maple.Extensions
         /// 项目可替换为 Addressables 或 AssetBundle 加载。
         /// </summary>
         public Func<string, AudioClip> ClipLoader { get; set; }
+
+        /// <summary>
+        /// 创建并配置全局 2D 音频服务。音源由框架内部持有，就绪后注册到 ServiceHub。
+        /// </summary>
+        public static AudioService Create(Transform parent, AudioServiceSettings settings)
+        {
+            var go = new GameObject(nameof(AudioService));
+            if (parent != null)
+                go.transform.SetParent(parent, false);
+            go.SetActive(false);
+
+            var service = go.AddComponent<AudioService>();
+            service.ClipLoader = settings.ClipLoader;
+            service.defaultBGMVolume = Mathf.Clamp01(settings.BgmVolume);
+            service.defaultSFXVolume = Mathf.Clamp01(settings.SfxVolume);
+
+            go.SetActive(true);
+            return service;
+        }
 
         #region IAudioService
 
@@ -116,11 +146,13 @@ namespace Maple.Extensions
 
         private void Awake()
         {
+            EnsureOwnedSources();
             InitSource(bgmSourceA);
             InitSource(bgmSourceB);
 
             sfxSource.playOnAwake = false;
             sfxSource.loop = false;
+            sfxSource.spatialBlend = 0f;
 
             _currentBgm = bgmSourceA;
             _nextBgm = bgmSourceB;
@@ -128,10 +160,31 @@ namespace Maple.Extensions
             ServiceHub.Register<IAudioService>(this);
         }
 
+        private void EnsureOwnedSources()
+        {
+            if (bgmSourceA == null)
+                bgmSourceA = CreateOwnedSource("BgmA");
+            if (bgmSourceB == null)
+                bgmSourceB = CreateOwnedSource("BgmB");
+            if (sfxSource == null)
+                sfxSource = CreateOwnedSource("Sfx");
+        }
+
+        private AudioSource CreateOwnedSource(string childName)
+        {
+            var child = new GameObject(childName);
+            child.transform.SetParent(transform, false);
+            var source = child.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.spatialBlend = 0f;
+            return source;
+        }
+
         private static void InitSource(AudioSource source)
         {
             source.loop = true;
             source.playOnAwake = false;
+            source.spatialBlend = 0f;
             source.volume = 0f;
         }
 

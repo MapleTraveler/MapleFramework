@@ -3,6 +3,15 @@
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 自 `1.0.0` 起承诺兼容：破坏性改动必须进 major 版本，并在此明确标注。
 
+## [1.3.0] - 2026-08-17
+
+### Added
+- `AudioServiceSettings` 与 `AudioService.Create`：项目提供 Clip 加载策略和默认音量，框架自行创建并持有全局 2D 音源，就绪后注册到 ServiceHub。
+- `AudioService` 在音源未接线时自行补齐 BGM/SFX `AudioSource`，不再要求调用方预先注入内部音源。
+
+### Changed
+- 移除 `AudioService` 上的 `[RequireComponent(typeof(AudioSource))]`。场景中已接线的音源仍按原字段使用。
+
 ## [1.2.0] - 2026-08-17
 
 ### Added
